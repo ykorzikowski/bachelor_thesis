@@ -1,0 +1,16 @@
+metadata:
+  title: Umfrage zu COVID-19 Warn Apps
+  short title: COVID
+  comment: Questionaire for covid 19
+---
+initial: True
+code: |
+  set_language(user_language)
+  need(start)
+---
+question: |
+  What language do you speak?  (Welche Sprache sprichst du?)
+choices:
+  - "English": en
+  - "Deutsch": de
+field: user_language

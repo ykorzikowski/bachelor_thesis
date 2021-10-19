@@ -1,0 +1,340 @@
+default language: de
+---
+metadata:
+  title: Umfrage zu COVID-19 Visualisierungen
+  short title: COVID
+  comment: Questionaire for covid 19
+---
+imports:
+ - random
+---
+sections:
+  - Einführung
+  - Demografische Daten
+  - Fragen zur eigenen Corona Situation
+---
+features:
+  navigation: True
+  progress bar: True
+---
+initial: True
+code: |
+  def shuffle(list):
+    random.shuffle(list)
+    return list
+  def getShuffleList(f, t):
+    return shuffle(list(range(f, t+1)))
+  multi_user = True
+  authority = "survey_1630676140@korzikowski.de"
+  menu_items = [ action_menu_item('Roadmap', 'road_map') ]
+  mailed = False
+
+  if returning_user(minutes=0.5):
+    welcome_back
+
+---
+event: start
+mandatory: True
+code: |
+  _0_0
+  intro_to_about_you
+  _1_1_1
+  _1_1_2
+  _1_1_3
+  if _1_1_4 == 'Ja':
+    _1_1_4_1
+    _1_1_4_2
+  _1_1_5
+  _1_1_6
+  _ask2
+  _1_2_1
+  _1_2_2
+  _1_2_3
+  _1_3_1
+  _1_3_2
+  _1_3_3
+  _1_3_4
+
+  if _comment_q == 'Ja':
+    _comment
+
+  if not mailed:
+    _time_dif = date_difference(starting=start_time(), ending=current_datetime()).seconds
+    mail_me = send_email(template=question, to=[authority])
+    store_variables_snapshot()
+    mailed = True
+
+  final_screen
+---
+question: |
+  Wilkommen zur Studie *Visualisierungen und das Verständis von Daten am Beispiel der Covid-19 Pandemie*
+subquestion: |
+  Diese Umfrage findent zum Anschluss an das durchgeführte Interview zum Thema Visualisierungen und das Verständnis von Daten am Beispiel der Covid-19 Pandemie statt.
+
+  Zur Bereitstellung & Aufrechterhaltung dieses Dienstes werden nur notwendige Daten gespeichert.
+
+  Eine Speicherung dieser Daten zusammen mit anderen personenbezogenen Daten des Nutzers findet nicht statt.
+
+  Diese Umfrage ist anonym. Die Daten werden nur für wissentschaftliche Zwecke erhoben und verwendet. Ein Abbruch ist jederzeit Möglich.
+
+  **Die Umfrage dauert in Etwa 5 Minuten**
+
+  Weitere Details siehe [Datenschutzerklärung](https://ykfotografie.de/datenschutz.html)
+
+  Verantwortlich für den Inhalt: Siehe [Impressum](https://ykfotografie.de/impressum.html)
+field: _0_0
+choices:
+  - Ich stimme zu
+---
+question: |
+  Start
+subquestion: |
+  Fangen wir mit ein Paar Fragen zu deiner Person an. Diese Daten geben Aufschluss darüber,
+  ob es Unterschiede bei der Wahrnehmung der Visualiserung im Zusammenhang mit demografischen Daten gibt.
+field: intro_to_about_you
+---
+field: _1_1_1
+question: |
+  Was ist dein Geschlecht?
+choices:
+  - Männlich
+  - Weiblich
+  - Divers
+section: Demografische Daten
+---
+question: |
+  Wie alt bist du?
+fields:
+  - Alter: _1_1_2
+    datatype: number
+    min: 10
+    max: 100
+section: Demografische Daten
+---
+field: _1_1_3
+question: |
+  Was ist dein höchster Schulabschluss?
+choices:
+  - Keinen
+  - Mittlere Reife (Hauptschule)
+  - Fachhochschulreife (Abitur oder Fachabitur)
+  - Universitätsabschluss (Bachelor, Master, Doktor)
+section: Demografische Daten
+---
+field: _1_1_4
+question: |
+  Bist du aktuell berufsstätig?
+choices:
+  - Nein
+  - Ja
+section: Demografische Daten
+---
+field: _1_1_4_1
+question: |
+  In welchem Umfang bist du berufstätig?
+choices:
+  - Teilzeit oder Nebenjob
+  - Vollzeit
+section: Demografische Daten
+---
+field: _1_1_4_2
+question: |
+  Konntest du deine Tätigkeit überwiegend von zuhause aus erledigen?
+choices:
+  - Nein
+  - Ja
+section: Demografische Daten
+---
+field: _1_1_5
+question: |
+  Wohnst du mit Personen zusammen, welche einer Risikogruppe angehören?
+choices:
+  - Nein
+  - Ja
+section: Demografische Daten
+---
+field: _1_1_6
+question: |
+  Ich wohne...
+choices:
+  - ... auf dem Land
+  - ... in einem Vorort
+  - ... in einer Stadt
+  - k.A.
+section: Demografische Daten
+---
+field: _ask2
+subquestion: |
+  Fragen zur eigenen Corona Situation
+question: |
+  Nun kommen einige Fragen zu deiner eigenen Corona Situation.
+section: Fragen zur eigenen Corona Situation
+---
+field: _1_2_1
+subquestion: |
+  Inwieweit schätzt du deine eigene Corona-Situation ein?
+question: |
+  Wie schätzt du dein eigenes Risiko ein an Corona ernsthaft zu erkranken?
+choices:
+  - 1 (gering)
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6 (hoch)
+section: Fragen zur eigenen Corona Situation
+---
+field: _1_2_2
+subquestion: |
+  Inwieweit schätzt du deine eigene Corona-Situation ein?
+question: |
+  Wie schätzt du die allgemeine Gefährdungslage aktuell ein?
+choices:
+  - 1 (gering)
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6 (hoch)
+section: Fragen zur eigenen Corona Situation
+---
+field: _1_2_3
+subquestion: |
+  Inwieweit schätzt du deine eigene Corona-Situation ein?
+question: |
+  Bist du Teil einer Risikogruppe?
+choices:
+  - 1 (stimme überhaupt nicht zu)
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6 (stimme voll zu)
+section: Fragen zur eigenen Corona Situation
+---
+field: _1_3_1
+subquestion: |
+  Inwieweit schätzt du deine eigene Corona-Situation ein?
+question: |
+  Ich habe mein Leben selbst in der Hand.
+choices:
+  - 1 (stimme überhaupt nicht zu)
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6 (stimme voll zu)
+section: Fragen zur eigenen Corona Situation
+---
+field: _1_3_2
+subquestion: |
+  Inwieweit schätzt du deine eigene Corona-Situation ein?
+question: |
+  Egal ob privat oder im Beruf: Mein Leben wird zum großen Teil von anderen bestimmt.
+choices:
+  - 1 (stimme überhaupt nicht zu)
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6 (stimme voll zu)
+section: Fragen zur eigenen Corona Situation
+---
+field: _1_3_3
+subquestion: |
+  Inwieweit schätzt du deine eigene Corona-Situation ein?
+question: |
+  Meine Pläne werden oft vom Schicksal durchkreuzt
+choices:
+  - 1 (stimme überhaupt nicht zu)
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6 (stimme voll zu)
+section: Fragen zur eigenen Corona Situation
+---
+field: _1_3_4
+question: |
+   Wenn ich mich anstrenge, werde ich auch Erfolg haben.
+subquestion: |
+  Inwieweit schätzt du deine eigene Corona-Situation ein?
+choices:
+  - 1 (stimme überhaupt nicht zu)
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6 (stimme voll zu)
+section: Fragen zur eigenen Corona Situation
+---
+field: _comment_q
+question: |
+  Möchtest du einen Kommentar o.Ä. hinterlassen?
+choices:
+  - Ja
+  - Nein
+section: Apps zur Kontaktverfolgung
+---
+question: |
+  Wenn du magst ist hier Platz für Notizen.
+fields:
+  - Life Story: _comment
+    input type: area
+section: Apps zur Kontaktverfolgung
+---
+template: question
+subject: |
+  Interview Results
+content: |
+  `${ all_variables() }`
+---
+code: |
+  hours = current_datetime().hour
+  timeStr = "schöne Nacht"
+  if hours > 6 and hours < 12:
+    timeStr = "schönen Morgen"
+  if hours > 12 and hours < 17:
+    timeStr = "schönen Tag"
+  if hours > 17 and hours < 23:
+    timeStr = "schönen Abend"
+
+---
+progress: 100
+event: final_screen
+question: Vielen Dank!
+prevent going back: True
+subquestion: |
+  Vielen Dank für deine Teilnahme! Deine Umfragewerte wurden gespeichert. Ich wünsche dir jetzt noch einen ${timeStr}.
+
+section: Conclusion
+---
+event: welcome_back
+question: |
+  Welcome back!
+subquestion: |
+  You are currently in the
+  **${ nav.get_section(display=True) }**
+  section.
+
+  ${ nav }
+
+  Press "Continue" to pick up
+  where you left off.
+buttons:
+  Continue: continue
+---
+event: road_map
+question: |
+  Roadmap
+subquestion: |
+  You are currently in the
+  **${ nav.get_section(display=True) }**
+  section.
+
+  ${ nav }
+
+  Press "Continue" to resume the
+  interview.
+buttons:
+  Continue: continue
